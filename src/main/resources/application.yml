@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/security
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    # h2.bat 실행 후 jdbc:h2~/security 로 연결 먼저 해서 local 에 mv 파일 생성 후
+    # jdbc:h2:tcp://localhost/~/security 로 다시 연결
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        # show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+logging.level:
+  org.hibernate.SQL: debug
+  # org.hibernate.type: trace
