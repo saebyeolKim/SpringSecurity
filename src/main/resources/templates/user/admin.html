@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+관리자 권한만 들어올 수 있는 페이지
+<button type="button" th:onclick="|location.href='@{/post}'|">사용자</button>
+<button type="button" th:onclick="|location.href='@{/signup}'|">로그아웃</button>
+</body>
+</html>
