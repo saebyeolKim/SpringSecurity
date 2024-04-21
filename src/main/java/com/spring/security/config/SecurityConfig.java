@@ -2,6 +2,7 @@ package com.spring.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.security.domain.Role;
+import com.spring.security.service.MyUserDetailsService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -34,6 +35,8 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @EnableWebSecurity //스프링 시큐리티 활성화하고 웹 보안 설정 구성
 public class SecurityConfig {
 
+    private final MyUserDetailsService userDetailsService;
+
 
     //스프링 시큐리티 기능 비활성화
     @Bean
@@ -51,7 +54,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequest ->
                         authorizeRequest
 //                                .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                .requestMatchers("/", "/login/**").permitAll()
+                                .requestMatchers("/", "/login/**", "/signup").permitAll()
                                 .requestMatchers("post", "api/post/**").hasRole(Role.USER.name())
                                 .requestMatchers("admin", "api/admin/**").hasRole(Role.ADMIN.name())
                                 .anyRequest().authenticated()
@@ -59,6 +62,17 @@ public class SecurityConfig {
                 .exceptionHandling((exceptionConfig) ->
                         exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint).accessDeniedHandler(accessDeniedHandler)
                 ) // 401 403 관련 예외처리
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/login")
+                                .usernameParameter("email")
+                                .passwordParameter("password")
+                                .loginProcessingUrl("/loginUser")
+                                .defaultSuccessUrl("/", true)
+                )
+                .logout(logout ->
+                        logout.logoutSuccessUrl("/"))
+                .userDetailsService(userDetailsService)
                 .headers(
                         headersConfigurer ->
                                 headersConfigurer
