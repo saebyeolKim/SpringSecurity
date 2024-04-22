@@ -5,6 +5,7 @@ import com.spring.security.domain.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Setter
@@ -18,10 +19,10 @@ public class PostSignupRequest {
         this.password = password;
     }
 
-    public Member toEntity() {
+    public Member toEntity(PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .role(Role.USER)
                 .build();
     }

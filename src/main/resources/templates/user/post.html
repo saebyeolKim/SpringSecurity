@@ -6,6 +6,7 @@
 </head>
 <body>
 사용자 권한 가진 사람만 들어올 수 있는 페이지
+<span th:text="${user.email}"></span>
 <button type="button" th:onclick="|location.href='@{/admin}'|">관리자</button>
 <button type="button" th:onclick="|location.href='@{/signup}'|">로그아웃</button>
 </body>

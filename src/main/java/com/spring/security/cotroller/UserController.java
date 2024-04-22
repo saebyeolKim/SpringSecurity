@@ -1,9 +1,11 @@
 package com.spring.security.cotroller;
 
+import com.spring.security.domain.Member;
 import com.spring.security.dto.PostSignupRequest;
 import com.spring.security.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/post")
-    public String post(@AuthenticationPrincipal UserDetails user, Model model) {
+    public String post(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
         return "user/post";
     }

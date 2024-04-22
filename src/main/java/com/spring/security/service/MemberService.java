@@ -1,8 +1,10 @@
 package com.spring.security.service;
 
+import com.spring.security.config.SimplePasswordEncoder;
 import com.spring.security.dto.PostSignupRequest;
 import com.spring.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,8 +12,9 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public String save(PostSignupRequest userDto) {
-        return userRepository.save(userDto.toEntity()).getEmail();
+        return userRepository.save(userDto.toEntity(passwordEncoder)).getEmail();
     }
 }

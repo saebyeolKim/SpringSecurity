@@ -69,4 +69,8 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true; //true : 계정이 사용 가능할 시 true 반환
     }
+
+    public String getEmail() {
+        return email;
+    }
 }
