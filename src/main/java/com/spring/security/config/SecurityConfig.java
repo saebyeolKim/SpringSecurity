@@ -2,16 +2,15 @@ package com.spring.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.security.domain.Role;
+import com.spring.security.repository.UserRepository;
 import com.spring.security.service.MyUserDetailsService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -23,8 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.ErrorResponse;
 
 import java.io.PrintWriter;
 
@@ -37,6 +34,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class SecurityConfig {
 
     private final MyUserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
 
     //스프링 시큐리티 기능 비활성화
@@ -52,6 +50,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequest ->
                         authorizeRequest
 //                                .requestMatchers(PathRequest.toH2Console()).permitAll()
@@ -74,6 +73,8 @@ public class SecurityConfig {
                 .logout(logout ->
                         logout.logoutSuccessUrl("/"))
                 .userDetailsService(userDetailsService)
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy((SessionCreationPolicy.STATELESS)))
                 .headers(
                         headersConfigurer ->
                                 headersConfigurer
@@ -119,5 +120,18 @@ public class SecurityConfig {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    public class CustomFilterApply extends AbstractHttpConfigurer<CustomFilterApply, HttpSecurity> {
+
+        @Override
+        public void configure(HttpSecurity http) throws Exception {
+            AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+            http
+                    .addFilter(CorsConfig.corsFilter())
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
+        }
+    }
+
 
 }

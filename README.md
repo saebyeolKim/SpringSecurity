@@ -34,8 +34,18 @@ SessionCreationPolicy() : 정책을 설정합니다.
 
 SessionCreationPolicy.Stateless : 4가지 정책 중 하나로, 스프링 시큐리티가 생성하지 않고 존재해도 사용하지 않습니다. (JWT와 같이 세션을 사용하지 않는 경우에 사용합니다)
 
+공식문서
+
+https://docs.spring.io/spring-security/reference/servlet/authentication/session-management.html
+
 참고 블로그
 
 https://velog.io/@woosim34/Spring-Spring-Security-%EC%84%A4%EC%A0%95-%EB%B0%8F-%EA%B5%AC%ED%98%84SessionSpring-boot3.0-%EC%9D%B4%EC%83%81
 https://velog.io/@kide77/Spring-Boot-3.x-Security-%EA%B8%B0%EB%B3%B8-%EC%84%A4%EC%A0%95-%EB%B0%8F-%EB%B3%80%ED%99%94
 https://devhan.tistory.com/310?category=1111057
+
+jwt 참고 블로그
+
+https://lealea.tistory.com/247
+
+https://velog.io/@kimujin99/Spring-React-%EC%B9%B4%EC%B9%B4%EC%98%A4-%EC%86%8C%EC%85%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-JWT-4
